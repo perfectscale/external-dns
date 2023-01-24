@@ -201,6 +201,9 @@ func (sc *ingressSource) filterByAnnotations(ingresses []*networkv1.Ingress) ([]
 	filteredList := []*networkv1.Ingress{}
 
 	for _, ingress := range ingresses {
+        if (ingress.Spec.IngressClassName) != nil {
+            ingress.Annotations["kubernetes.io/ingress.class"] = (*ingress.Spec.IngressClassName)
+        }
 		// include ingress if its annotations match the selector
 		if matchLabelSelector(selector, ingress.Annotations) {
 			filteredList = append(filteredList, ingress)
